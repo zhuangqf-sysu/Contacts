@@ -7,9 +7,9 @@ Android Learn Demo
 
 实现：
 
-1、利用SharedPreferences实现通信录登录功能，要求保存用户名；
+1、利用SharedPreferences实现通信录登录功能
 
-2、利用SugarORM框架完成通信录记录的增删查改操作（crud）删除操作可只在记录详情页完成
+2、利用SugarORM框架完成通信录记录的增删查改操作
 
 
 
