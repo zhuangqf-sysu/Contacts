@@ -15,6 +15,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editpw;
     private Button login;
     private SharedPreferences sp;
+    private EditText editclient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,19 +23,22 @@ public class LoginActivity extends AppCompatActivity {
 
         editpw = (EditText)findViewById(R.id.editpw);
         login = (Button)findViewById(R.id.login);
+        editclient = (EditText)findViewById(R.id.editclient);
 
         sp = getSharedPreferences("client", Context.MODE_PRIVATE);
         final String password = sp.getString("password",null);
-
+        final String client = sp.getString("client",null);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String s = editpw.getText().toString();
-                if(password==null){
-                    sp.edit().putString("password",s).commit();
+                String spw = editpw.getText().toString();
+                String scl = editclient.getText().toString();
+                if(client==null){
+                    sp.edit().putString("password",spw)
+                            .putString("client",scl).commit();
                 }else{
-                    if(!password.equals(s)){
-                        Toast.makeText(LoginActivity.this,"wrong password",Toast.LENGTH_LONG).show();
+                    if(!password.equals(spw)||!client.equals(scl)){
+                        Toast.makeText(LoginActivity.this,"admin 123456",Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
