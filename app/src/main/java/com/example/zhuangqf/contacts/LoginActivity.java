@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText editpw;
@@ -32,13 +36,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String spw = editpw.getText().toString();
-                String scl = editclient.getText().toString();
+                String scl = md5(editclient.getText().toString());
                 if(client==null){
                     sp.edit().putString("password",spw)
                             .putString("client",scl).commit();
                 }else{
                     if(!password.equals(spw)||!client.equals(scl)){
-                        Toast.makeText(LoginActivity.this,"admin 123456",Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this,"wrong password",Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
@@ -46,6 +50,24 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
+
+    private String md5(String string) {
+        byte[] hash;
+        try {
+            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Huh, MD5 should be supported?", e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
+        }
+
+        StringBuilder hex = new StringBuilder(hash.length * 2);
+        for (byte b : hash) {
+            if ((b & 0xFF) < 0x10) hex.append("0");
+            hex.append(Integer.toHexString(b & 0xFF));
+        }
+        return hex.toString();
+    }
+
 }

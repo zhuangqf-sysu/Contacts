@@ -14,19 +14,17 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private List<Contact> contactList;
-    private  myListAdapter mAdapter;
+    private MyListAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SugarContext.init(this);
-
         Button mAdd = (Button)findViewById(R.id.add);
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, addActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddActivity.class);
                 startActivity(intent);
             }
         });
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         contactList = Contact.listAll(Contact.class);
-        mAdapter = new myListAdapter(this,contactList);
+        mAdapter = new MyListAdapter(this,contactList);
         ListView myListView = (ListView)findViewById(R.id.listView);
         myListView.setAdapter(mAdapter);
     }

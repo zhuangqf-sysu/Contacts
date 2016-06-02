@@ -2,16 +2,12 @@ package com.example.zhuangqf.contacts;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
@@ -20,13 +16,13 @@ import java.util.List;
 /**
  * Created by zhuangqf on 6/1/16.
  */
-public class myListAdapter extends BaseSwipeAdapter {
+public class MyListAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
     private Integer mCount;
     private List<Contact> contactList;
 
-    public myListAdapter(Context mContext, List<Contact>contactList) {
+    public MyListAdapter(Context mContext, List<Contact> contactList) {
         this.mContext = mContext;
         this.mCount = contactList.size();
         this.contactList = contactList;
@@ -54,7 +50,7 @@ public class myListAdapter extends BaseSwipeAdapter {
         l.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext,addActivity.class);
+                Intent intent = new Intent(mContext,AddActivity.class);
                 intent.putExtra("contactId",contactList.get(position).getId());
                 mContext.startActivity(intent);
             }

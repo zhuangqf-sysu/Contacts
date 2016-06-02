@@ -6,9 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-public class addActivity extends AppCompatActivity {
+public class AddActivity extends AppCompatActivity {
 
     private Contact mContact;
     private EditText editName;
