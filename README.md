@@ -11,15 +11,18 @@ Android Learn Demo
 
 2、利用SugarORM框架完成通信录记录的增删查改操作
 
+3、ActionBar OptionMenu
+
+4、ActionBar Search
+
 
 
 
 
 第三方：
 
-1、UI组件：AndroidSwipeLayout https://github.com/daimajia/AndroidSwipeLayout；
 
-2、SQLite操作库：SugarOrm http://satyan.github.io/sugar/getting-started.html；
+1、SQLite操作库：SugarOrm http://satyan.github.io/sugar/getting-started.html；
 
 
 
