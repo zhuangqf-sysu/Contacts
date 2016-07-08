@@ -3,6 +3,7 @@ package com.example.zhuangqf.contacts;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.SearchRecentSuggestions;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,9 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SearchView;
-import android.widget.Toast;
-
-import com.google.common.base.MoreObjects;
 
 import java.util.List;
 
@@ -34,9 +32,12 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            query = "%"+intent.getStringExtra(SearchManager.QUERY)+"%";
+            query = intent.getStringExtra(SearchManager.QUERY);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                    RecentSearchContentProvider.AUTHORITY,RecentSearchContentProvider.DATABASE_MODE_QUERIES);
+            suggestions.saveRecentQuery(query, null);
+            query = "%"+query+"%";
         }else query = "%";
-
 
         recycler = (RecyclerView) findViewById(R.id.recycler_view);
         recycler.setLayoutManager(new LinearLayoutManager(this));
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) menu.findItem(R.id.user_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false);
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setQueryRefinementEnabled(true);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -118,7 +121,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            query = "%"+intent.getStringExtra(SearchManager.QUERY)+"%";
+            query = intent.getStringExtra(SearchManager.QUERY);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                    RecentSearchContentProvider.AUTHORITY,RecentSearchContentProvider.DATABASE_MODE_QUERIES);
+            suggestions.saveRecentQuery(query, null);
+            query = "%"+query+"%";
         }else query = "%";
         recycler.setAdapter(new MyRecyclerAdapter(initData()));
     }
