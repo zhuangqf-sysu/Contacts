@@ -4,22 +4,9 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        >
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAlignment="center"
-            android:text="Add Contact"
-            android:textSize="20dp"
-            android:id="@+id/add"/>
-    </LinearLayout>
-
-    <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listView"
-            android:layout_gravity="center_horizontal"/>
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view"
+        />
 </LinearLayout>

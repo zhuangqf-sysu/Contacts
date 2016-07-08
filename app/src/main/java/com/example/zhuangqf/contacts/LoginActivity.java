@@ -10,14 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText editpw;
     private Button login;
+    private Button register;
     private SharedPreferences sp;
     private EditText editclient;
     @Override
@@ -28,46 +26,38 @@ public class LoginActivity extends AppCompatActivity {
         editpw = (EditText)findViewById(R.id.editpw);
         login = (Button)findViewById(R.id.login);
         editclient = (EditText)findViewById(R.id.editclient);
+        register = (Button)findViewById(R.id.register);
 
-        sp = getSharedPreferences("client", Context.MODE_PRIVATE);
-        final String password = sp.getString("password",null);
-        final String client = sp.getString("client",null);
+        sp = getSharedPreferences("contacts", Context.MODE_PRIVATE);
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String spw = editpw.getText().toString();
-                String scl = md5(editclient.getText().toString());
-                if(client==null){
-                    sp.edit().putString("password",spw)
-                            .putString("client",scl).commit();
+                String client = editclient.getText().toString();
+                String password  = MyApplication.MD5(editpw.getText().toString());
+                String prePassword = sp.getString(client,null);
+                if(prePassword==null){
+                    Toast.makeText(v.getContext(),"用户未注册",Toast.LENGTH_LONG).show();
+                }else if(password.equals(prePassword)){
+                    MyApplication.client = client;
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }else{
-                    if(!password.equals(spw)||!client.equals(scl)){
-                        Toast.makeText(LoginActivity.this,"wrong password",Toast.LENGTH_LONG).show();
-                        return;
-                    }
+                    Toast.makeText(v.getContext(),"密码错误",Toast.LENGTH_LONG).show();
                 }
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(intent);
             }
         });
-    }
 
-    private String md5(String string) {
-        byte[] hash;
-        try {
-            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Huh, MD5 should be supported?", e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
-        }
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),RegisterActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-        StringBuilder hex = new StringBuilder(hash.length * 2);
-        for (byte b : hash) {
-            if ((b & 0xFF) < 0x10) hex.append("0");
-            hex.append(Integer.toHexString(b & 0xFF));
-        }
-        return hex.toString();
     }
 
 }
