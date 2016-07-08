@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/user_search"
+        android:title="search"
+        android:icon="@drawable/ic_search_black_24dp"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.widget.SearchView"/>
+    <item
+        android:id="@+id/user_add"
+        android:title="添加"
+        android:icon="@drawable/ic_add_circle_black_24dp"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/user_logout"
+        android:title="登出"
+        android:icon="@drawable/ic_contact_mail_black_24dp"
+        app:showAsAction="never" />
+
+</menu>
