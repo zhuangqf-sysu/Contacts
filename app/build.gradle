@@ -26,4 +26,5 @@ dependencies {
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.github.satyan:sugar:1.4'
     compile 'com.android.support:design:23.1.1'
+    compile 'com.navercorp.pulltorefresh:library:3.2.0@aar'
 }

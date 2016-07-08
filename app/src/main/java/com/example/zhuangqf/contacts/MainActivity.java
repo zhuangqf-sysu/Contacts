@@ -1,5 +1,7 @@
 package com.example.zhuangqf.contacts;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.SearchView;
 import android.widget.Toast;
+
+import com.google.common.base.MoreObjects;
 
 import java.util.List;
 
@@ -20,15 +25,25 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recycler;
     List<Contact>mList;
+    String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            query = "%"+intent.getStringExtra(SearchManager.QUERY)+"%";
+        }else query = "%";
+
+
         recycler = (RecyclerView) findViewById(R.id.recycler_view);
         recycler.setLayoutManager(new LinearLayoutManager(this));
+
     }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -37,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<Contact> initData(){
-        mList = Contact.find(Contact.class,"client = ?", MyApplication.client);
+        mList = Contact.find(Contact.class,"client = ? and name like ?", MyApplication.client,query);
         return  mList;
     }
 
@@ -45,14 +60,18 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.user_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.user_search:
-                break;
             case R.id.user_add:
                 Intent intent1 = new Intent(MainActivity.this, AddActivity.class);
                 startActivity(intent1);
@@ -64,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 break;
             default:
-                break;
+                return super.onOptionsItemSelected(item);
         }
         return true;
     }
@@ -94,6 +113,13 @@ public class MainActivity extends AppCompatActivity {
                 return super.onContextItemSelected(item);
         }
         return true;
+    }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            query = "%"+intent.getStringExtra(SearchManager.QUERY)+"%";
+        }else query = "%";
+        recycler.setAdapter(new MyRecyclerAdapter(initData()));
     }
 }
